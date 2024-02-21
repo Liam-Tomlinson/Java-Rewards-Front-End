@@ -9,13 +9,14 @@ import {
 import Constants from 'expo-constants';
 import BusinessProfile from './src/Screens/business-profile';
 import CreateAccount from './src/Screens/create-account';
+import RootNavigation from './src/navigation';
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar />
-      <CreateAccount/>
-    </SafeAreaView>
+    // <SafeAreaView style={styles.container}>
+    //   <StatusBar />
+    // </SafeAreaView>
+      <RootNavigation/>
   );
 }
 

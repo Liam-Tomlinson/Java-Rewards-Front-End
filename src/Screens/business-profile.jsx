@@ -3,11 +3,14 @@ import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity} from 'reac
 import { Card, Button } from '@rneui/themed';
 import { LineChart } from 'react-native-chart-kit';
 import profile from '../Images/7LUyy3-LogoMakr (1).png';
+import { auth } from '../config/firebase';
+import { useAuth } from '../../utils/useAuth';
 
 
 
 
 export default function BusinessProfile() {
+  const {user} = useAuth()
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -15,6 +18,7 @@ export default function BusinessProfile() {
                 <Image style={styles.avatar} source={profile}/>
                 </View>
                 <Text style={styles.businessName}>Business Name</Text>
+                <Button onPress={() => {auth.signOut()}}>Sign Out</Button>
             </View>
             <View style={styles.bio}>
                     <Card containerStyle={{borderRadius: 8}}>

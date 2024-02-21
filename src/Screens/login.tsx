@@ -6,12 +6,15 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import background from '../../images/loginbkg.jpg'
+import { useNavigation } from '@react-navigation/native';
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+
+  const navigation = useNavigation<any>()
 
   const signIn = async () => {
     setLoading(true)
@@ -92,7 +95,7 @@ export default function Login() {
             </TouchableOpacity>
             <Text style={styles.orText}>Or</Text>
             <TouchableOpacity
-              onPress={signUp}
+              onPress={() => {navigation.navigate("CreateAcc")}}
               style={[styles.button, styles.buttonOutline]}
             >
               <Text style={styles.buttonOutlineText}>Register</Text>
