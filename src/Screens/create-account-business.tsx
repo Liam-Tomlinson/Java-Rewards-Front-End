@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  ScrollView
+  ScrollView,
+  Button
 } from "react-native";
 import { useState} from "react";
 import { auth } from "../config/firebase";
@@ -33,7 +34,7 @@ export default function CreateAccountBusiness() {
   const [postcodeValid, setPostcodeValid] = useState(true)
  
 
-    const geoCode = async () => {
+  const geoCode = async () => {
       const geoCodedLocation = await Location.geocodeAsync(postcode)
       setLat(geoCodedLocation[0].latitude)
       setLong(geoCodedLocation[0].longitude)
@@ -141,6 +142,7 @@ export default function CreateAccountBusiness() {
           }}
           onBlur={() => {validatePostcode(setPostcodeValid, postcode)}}
         />
+        <Button title="Submit postcode" onPress={geoCode}></Button>
         <TextInput
           value={avatar}
           style={styles.input}

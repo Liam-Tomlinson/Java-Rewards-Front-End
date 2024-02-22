@@ -1,31 +1,49 @@
 
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView} from 'react-native';
 import { Card, Button } from '@rneui/themed';
+
 import { LineChart } from 'react-native-chart-kit';
 import profile from '../Images/7LUyy3-LogoMakr (1).png';
 import { auth } from '../config/firebase';
-
-
+import { useEffect, useState } from 'react';
+import { getShopData } from '../../utils/api';
 
 export default function BusinessProfile() {
+  const [name, setName] = useState("")
+  const [description, setDescription] = useState("")
+  const [avatar, setAvatar] = useState("")
+
+  useEffect(() => {
+    getShopData("mancunianbrew@example.com").then((shopData) => {
+      setName(shopData.name)
+      setDescription(shopData.description)
+      setAvatar(shopData.avatar_url)
+    }).catch((err) => {
+      console.log(err)
+    })
+  }, [])
+
     return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <View>
-                <Image style={styles.avatar} source={profile}/>
-                </View>
-                <Text style={styles.businessName}>Business Name</Text>
-            </View>
+        <ScrollView automaticallyAdjustKeyboardInsets={true} style={styles.container} contentContainerStyle={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
             <View style={styles.bio}>
+                    <Card>
+                      <Card.Title>{name}</Card.Title>
+                      <Card.Image source={{uri: `${avatar}`}} height={100}></Card.Image>
+                    </Card>
                     <Card containerStyle={{borderRadius: 8}}>
-                        <Card.Title>Your bio</Card.Title>
-                        <Text>"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."</Text>
+                        <Card.Title><Text>Your Bio</Text></Card.Title>
+                        <Text>{description}</Text>
                     <Button title="Update bio" containerStyle={styles.button} 
                     titleStyle={{fontWeight: "bold", fontSize: 13}}
                     buttonStyle={{backgroundColor: "#bf6240"}}
                     />
                     <Button onPress={() => {auth.signOut()}}>Sign Out</Button>
                     </Card>
+               
             </View>
             
 
@@ -70,7 +88,7 @@ export default function BusinessProfile() {
               />
             </Card>
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -78,8 +96,7 @@ export default function BusinessProfile() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+      
     },
     header: {
         flexDirection: "row",
@@ -92,7 +109,9 @@ const styles = StyleSheet.create({
       alignItems: "center",
     },
     bio: {
+        flex:1,
         marginBottom: 20,
+        width: "100%"
     },
     button: {
       width: "30%",
@@ -119,5 +138,18 @@ const styles = StyleSheet.create({
     },
     businessName: {
       fontWeight: "700"
-    }
+    },
+    card1: {
+      flex: 1,
+      alignItems: "center",
+      padding: 10,
+      width: "90%",
+      justifyContent: "space-evenly",
+      marginTop: 50,
+      marginBottom: 10,
+    },
+    image: {
+      width: "95%",
+      borderRadius: 10,
+    },
 })

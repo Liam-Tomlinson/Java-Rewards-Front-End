@@ -32,3 +32,13 @@ export function postNewShop(name: string, email: string, lat: number, long: numb
       console.log(err)
     })
 }
+
+export function getShopData(email: string) {
+  return api.post('/shops/email', {email: email}).then((res) => {
+    console.log(res.data)
+   return res.data.shop[0]
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
