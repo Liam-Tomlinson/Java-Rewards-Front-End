@@ -4,11 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import background from "../Images/coffee-background.jpeg";
 import { useAccountContext} from "../contexts/AccountContext";
 import { useContext } from "react";
+import { useAuth } from "../../utils/useAuth";
 
 export default function Homepage() {
   const navigation = useNavigation();
   const { accountType, setAccountType } = useAccountContext();
-
+  const {user} = useAuth()
+  
   return (
     <View style={styles.root}>
       <ImageBackground

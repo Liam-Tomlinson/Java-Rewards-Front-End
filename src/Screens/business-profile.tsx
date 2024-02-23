@@ -1,9 +1,9 @@
 
-import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity, ActivityIndicator} from 'react-native';
 import { Card, Button } from '@rneui/themed';
-
+import { ScrollView } from 'react-native-gesture-handler';
 import { LineChart } from 'react-native-chart-kit';
-import profile from '../Images/7LUyy3-LogoMakr (1).png';
+import profile from '../Images/JavaRewardsLogo.png';
 import { auth } from '../config/firebase';
 import { useEffect, useState } from 'react';
 import { getShopData } from '../../utils/api';
@@ -12,27 +12,30 @@ export default function BusinessProfile() {
   const [name, setName] = useState("")
   const [description, setDescription] = useState("")
   const [avatar, setAvatar] = useState("")
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    setIsLoading(true)
     getShopData("mancunianbrew@example.com").then((shopData) => {
       setName(shopData.name)
       setDescription(shopData.description)
       setAvatar(shopData.avatar_url)
+      setIsLoading(false)
     }).catch((err) => {
       console.log(err)
     })
   }, [])
 
-    return (
+    return isLoading ? (<ActivityIndicator />) : (
         <ScrollView automaticallyAdjustKeyboardInsets={true} style={styles.container} contentContainerStyle={{
-          flex: 1,
+          flexGrow: 1,
           justifyContent: "center",
           alignItems: "center",
         }}>
-            <View style={styles.bio}>
-                    <Card>
+            <View style={styles.profile}>
+                    <Card containerStyle={{borderRadius: 8}}>
                       <Card.Title>{name}</Card.Title>
-                      <Card.Image source={{uri: `${avatar}`}} height={100}></Card.Image>
+                      <Card.Image source={{uri: `${avatar ? avatar : profile}`}} height={100}></Card.Image>
                     </Card>
                     <Card containerStyle={{borderRadius: 8}}>
                         <Card.Title><Text>Your Bio</Text></Card.Title>
@@ -41,7 +44,6 @@ export default function BusinessProfile() {
                     titleStyle={{fontWeight: "bold", fontSize: 13}}
                     buttonStyle={{backgroundColor: "#bf6240"}}
                     />
-                    <Button onPress={() => {auth.signOut()}}>Sign Out</Button>
                     </Card>
                
             </View>
@@ -87,6 +89,7 @@ export default function BusinessProfile() {
                 }}
               />
             </Card>
+            <Button onPress={() => {auth.signOut()}}>Sign Out</Button>
             </View>
         </ScrollView>
     )
@@ -98,34 +101,17 @@ const styles = StyleSheet.create({
         flex: 1,
       
     },
-    header: {
-        flexDirection: "row",
-      width: "100%",
-      marginTop: 10,
-      marginLeft: 10,
-      marginRight: 10,
-      paddingLeft: 0,
-      gap: 10,
-      alignItems: "center",
-    },
-    bio: {
-        flex:1,
-        marginBottom: 20,
-        width: "100%"
+    profile: {
+     width: "100%",
     },
     button: {
       width: "30%",
       alignSelf: "center",
       marginTop: 5
     },
-
     title: {
       textAlign: "center",
       fontWeight: "700",
-    },
-    stats: {
-        flex: 1,
-        backgroundColor: "yellow"
     },
     avatar: {
         margin: 0,
@@ -134,22 +120,10 @@ const styles = StyleSheet.create({
         resizeMode: "contain",
     },
     graph: {
-        flex: 1,
+        marginBottom: 70,
+        width: "100%"
     },
     businessName: {
       fontWeight: "700"
-    },
-    card1: {
-      flex: 1,
-      alignItems: "center",
-      padding: 10,
-      width: "90%",
-      justifyContent: "space-evenly",
-      marginTop: 50,
-      marginBottom: 10,
-    },
-    image: {
-      width: "95%",
-      borderRadius: 10,
-    },
+    }
 })

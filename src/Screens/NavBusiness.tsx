@@ -52,8 +52,8 @@ export default function NavBusiness() {
           }}
         />
         <Tab.Screen
-          name={"Login"}
-          component={Login}
+          name={"Camera"}
+          component={IndividualShop}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

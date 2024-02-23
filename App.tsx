@@ -10,7 +10,7 @@ import * as Location from "expo-location";
 import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import Login from './src/Screens/login';
 import Homepage from './src/Screens/home-page';
 import Constants from 'expo-constants';
@@ -18,13 +18,14 @@ import BusinessProfile from './src/Screens/business-profile';
 import UserProfile from './src/Screens/user-profile';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import NavUser from "./src/Screens/NavUser";
-
+import { onAuthStateChanged } from "firebase/auth";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   
   const [location, setLocation] = useState({});
+
   useEffect(() => {
     const getPermissions = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync()
@@ -37,7 +38,7 @@ export default function App() {
     }
     getPermissions()
   }, [])
-
+  
   return (
     <UserProvider>
       <RootNavigation/>

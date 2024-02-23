@@ -6,15 +6,21 @@ import BusinessStack from "./BusinessStack";
 
 export default function RootNavigation() {
   const { user } = useAuth();
-
   const {accountType} = useAccountContext()
-
-  if (user && accountType === 'Business') {
+  if (user && accountType === "Business") {
     return <BusinessStack />
-  } else if (user && accountType === 'Customer') {
+  } else if (user && user.email === 'Customer') {
     return <UserStack />
   } else {
     return <AuthStack/>
   }
+
+  // if (user && user.email === "mancunianbrew@example.com") {
+  //   return <BusinessStack />
+  // } else if (user && user.email === 'simon@test.com') {
+  //   return <UserStack />
+  // } else {
+  //   return <AuthStack/>
+  // }
 
 }
